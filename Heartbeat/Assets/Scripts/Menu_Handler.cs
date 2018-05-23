@@ -48,12 +48,24 @@ public class Menu_Handler : MonoBehaviour {
 
     public void FindSongsClick()
     {
-        System.Windows.Forms.FolderBrowserDialog fbd = new System.Windows.Forms.FolderBrowserDialog();
+        //System.Windows.Forms.FolderBrowserDialog fbd = new System.Windows.Forms.FolderBrowserDialog();
 
-        System.Windows.Forms.DialogResult result = fbd.ShowDialog();
-        if (result == System.Windows.Forms.DialogResult.OK)
-        {
-            Game_Data.songDirectory = fbd.SelectedPath;
+        //System.Windows.Forms.DialogResult result = fbd.ShowDialog();
+        //if (result == System.Windows.Forms.DialogResult.OK)
+        //{
+        //    Game_Data.songDirectory = fbd.SelectedPath;
+        //    if (Song_Parser.IsNullOrWhiteSpace(Game_Data.songDirectory))
+        //    {
+        //        Game_Data.validSongDir = false;
+        //    }
+        //    else
+        //    {
+        //        Game_Data.validSongDir = true;
+        //    }
+        //}
+
+
+        Game_Data.songDirectory = Application.dataPath + "/Music/";
             if (Song_Parser.IsNullOrWhiteSpace(Game_Data.songDirectory))
             {
                 Game_Data.validSongDir = false;
@@ -62,6 +74,7 @@ public class Menu_Handler : MonoBehaviour {
             {
                 Game_Data.validSongDir = true;
             }
-        }
+
+
     }
 }
