@@ -52,6 +52,8 @@ public class Song_Selector : MonoBehaviour {
         for (int i = 0; i < smFiles.Length; i++)
         {
             Song_Parser parser = new Song_Parser();
+            Debug.Log("Parsing File: "+smFiles[i].FullName);
+
             Song_Parser.Metadata songData = parser.Parse(smFiles[i].FullName);
 
             audioStartTime = songData.sampleStart;
@@ -59,7 +61,8 @@ public class Song_Selector : MonoBehaviour {
 
             if (!songData.valid)
             {
-                //Song data isnt valid
+                //Song data is not valid
+                Debug.Log("Song data is not valid");
                 continue;
             }
             else

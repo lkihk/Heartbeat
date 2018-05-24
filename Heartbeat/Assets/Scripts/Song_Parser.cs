@@ -56,11 +56,13 @@ public class Song_Parser
 
     public Metadata Parse(string newFilePath)
     {
+        Debug.Log("Parse");
         filePath = newFilePath;
 
         if (IsNullOrWhiteSpace(filePath))
         {
             //Error
+            Debug.Log("Parsing Error: Is Null Or White Space!");
             Metadata tempMeta = new Metadata();
             tempMeta.valid = false;
             return tempMeta;
@@ -84,7 +86,11 @@ public class Song_Parser
         string fileDir = Path.GetDirectoryName(filePath);
         if (!fileDir.EndsWith("\\") && !fileDir.EndsWith("/"))
         {
-            fileDir += "\\";
+            //window
+            //fileDir += "\\";
+
+            //both win and mac
+            fileDir += Path.DirectorySeparatorChar;
         }
 
         for (int i = 0; i < fileData.Count; i++)
@@ -121,6 +127,7 @@ public class Song_Parser
                         if (IsNullOrWhiteSpace(songData.musicPath) || !File.Exists(songData.musicPath))
                         {
                             //No music file found!
+                            Debug.Log("Error Parsing - No music file found! -"+songData.musicPath);
                             songData.musicPath = null;
                             songData.valid = false;
                         }
@@ -129,6 +136,7 @@ public class Song_Parser
                         if (!float.TryParse(line.Substring(line.IndexOf(':')).Trim(':').Trim(';'), out songData.offset))
                         {
                             //Error Parsing
+                            Debug.Log("Error Parsing - OFFSET");
                             songData.offset = 0.0f;
                         }
                         break;
@@ -136,6 +144,7 @@ public class Song_Parser
                         if (!float.TryParse(line.Substring(line.IndexOf(':')).Trim(':').Trim(';'), out songData.sampleStart))
                         {
                             //Error Parsing
+                            Debug.Log("Error Parsing - SAMPLESTART");
                             songData.sampleStart = 0.0f;
                         }
                         break;
@@ -143,6 +152,7 @@ public class Song_Parser
                         if (!float.TryParse(line.Substring(line.IndexOf(':')).Trim(':').Trim(';'), out songData.sampleLength))
                         {
                             //Error Parsing
+                            Debug.Log("Error Parsing - SAMPLELENGTH");
                             songData.sampleLength = sampleLengthDefault;
                         }
                         break;
@@ -150,6 +160,7 @@ public class Song_Parser
                         if (!float.TryParse(line.Substring(line.IndexOf(':')).Trim(':').Trim(';'), out songData.bpm) || songData.bpm <= 0)
                         {
                             //Error Parsing - BPM not valid
+                            Debug.Log("Error Parsing - DISPLAYBPM");
                             songData.valid = false;
                             songData.bpm = 0.0f;
                         }
@@ -237,6 +248,7 @@ public class Song_Parser
 
     private NoteData ParseNotes(List<string> notes)
     {
+        Debug.Log("ParseNotes");
         NoteData noteData = new NoteData();
         noteData.bars = new List<List<Notes>>();
 
