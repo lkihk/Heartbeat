@@ -18,6 +18,7 @@ public class Arrow_Movement : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        Debug.Log("Arrow_Movement.Start()");
         gen = GameObject.FindGameObjectWithTag("GameManager").GetComponent<Step_Generator>();
         scoreHandler = GameObject.FindGameObjectWithTag("GameManager").GetComponent<Score_Handler>();
 
@@ -40,7 +41,7 @@ public class Arrow_Movement : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-
+        Debug.Log("Arrow_Movement.Update()");
         arrowSpeed = gen.arrowSpeed;
         Vector3 tempPos = transform.position;
         tempPos.y -= arrowSpeed;

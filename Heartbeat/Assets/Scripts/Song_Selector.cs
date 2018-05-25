@@ -96,7 +96,7 @@ public class Song_Selector : MonoBehaviour {
 
     IEnumerator PreviewTrack(string musicPath)
     {
-        Debug.Log("Starting Preview for " + musicPath);
+        Debug.Log("PreviewTrack(): " + musicPath);
         string url = string.Format("file://{0}", musicPath);
         WWW www = new WWW(url);
 
@@ -108,7 +108,7 @@ public class Song_Selector : MonoBehaviour {
         AudioClip clip = www.GetAudioClip(false, false);
         audioSource.clip = clip;
 
-        Debug.Log("Loaded");
+        Debug.Log("PreviewTrack() - Loaded");
 
         audioSource.Play();
         audioSource.time = audioStartTime;
@@ -116,6 +116,7 @@ public class Song_Selector : MonoBehaviour {
         currentSongPath = musicPath;
 
         audioSource.volume = 0;
+        Debug.Log("PreviewTrack() - Done");
     }
 
     void StartSong(Song_Parser.Metadata songData)

@@ -73,7 +73,7 @@ public class Heartbeat_Controller : MonoBehaviour {
 
     IEnumerator LoadTrack(string path, Song_Parser.Metadata meta)
     {
-        Debug.Log(path);
+        Debug.Log("LoadTrack:"+path);
         string url = string.Format("file://{0}", path);
         WWW www = new WWW(url);
 
@@ -85,7 +85,7 @@ public class Heartbeat_Controller : MonoBehaviour {
         AudioClip clip = www.GetAudioClip(false, false);
         audioSource.clip = clip;
 
-        Debug.Log("Loaded");
+        Debug.Log("LoadTrack: Done!");
 
         songLoaded = true;
 

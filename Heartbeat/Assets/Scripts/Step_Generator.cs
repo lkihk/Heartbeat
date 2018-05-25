@@ -2,7 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class Step_Generator : MonoBehaviour {
+public class Step_Generator : MonoBehaviour
+{
 
     public GameObject leftArrow;
     public GameObject downArrow;
@@ -35,8 +36,10 @@ public class Step_Generator : MonoBehaviour {
     private Animator upAnim;
     private Animator rightAnim;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start()
+    {
+        Debug.Log("Step_Generator.Start()");
         heart = GameObject.FindGameObjectWithTag("Player");
         heartAudio = heart.GetComponent<AudioSource>();
 
@@ -45,9 +48,13 @@ public class Step_Generator : MonoBehaviour {
         upAnim = upArrowBack.GetComponent<Animator>();
         rightAnim = rightArrowBack.GetComponent<Animator>();
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    void Update()
+    {
+
+        Debug.Log("Step_Generator.Update() - A");
+
         if (leftAnim.GetBool("isLit"))
         {
             leftAnim.SetBool("isLit", false);
@@ -65,8 +72,18 @@ public class Step_Generator : MonoBehaviour {
             upAnim.SetBool("isLit", false);
         }
 
-        if (isInit && barCount < noteData.bars.Count)
+        Debug.Log("Step_Generator.Update() - B");
+
+
+
+        Debug.Log("Step_Generator.Update() - B isInit:" + isInit);
+        Debug.Log("Step_Generator.Update() - B barCount: " + barCount);
+        Debug.Log("Step_Generator.Update() - B noteData: " + noteData);
+        //Debug.Log("Step_Generator.Update() - B noteData.bars.Count:" + noteData.bars.Count);
+
+        if (isInit && (barCount < noteData.bars.Count))
         {
+            Debug.Log("Step_Generator.Update() - B - if");
             float pitch = heartAudio.pitch;
             arrowSpeed = originalArrowSpeed * pitch;
 
@@ -81,7 +98,9 @@ public class Step_Generator : MonoBehaviour {
                 barExecutedTime += barTime;
             }
         }
-	}
+
+        Debug.Log("Step_Generator.Update() - C");
+    }
 
     IEnumerator PlaceBar(List<Song_Parser.Notes> bar)
     {
@@ -113,37 +132,83 @@ public class Step_Generator : MonoBehaviour {
 
     public void InitSteps(Song_Parser.Metadata newSongData, Song_Parser.difficulties newDifficulty)
     {
+        Debug.Log("Step_Generator.InitSteps()");
+
         songData = newSongData;
         isInit = true;
         barTime = (60.0f / songData.bpm) * 4.0f;
         difficulty = newDifficulty;
         distance = originalDistance;
 
+
+
+
         switch (difficulty)
         {
             case Song_Parser.difficulties.beginner:
-                arrowSpeed = 0.007f;
-                noteData = songData.beginner;
+                if (songData.beginnerExists)
+                {
+                    Debug.Log("Step_Generator.InitSteps() - beginner");
+                    arrowSpeed = 0.007f;
+                    noteData = songData.beginner;
+                }
+                else
+                {
+                    goto case Song_Parser.difficulties.easy;
+                }
                 break;
             case Song_Parser.difficulties.easy:
-                arrowSpeed = 0.009f;
-                noteData = songData.easy;
+                if (songData.easyExists)
+                {
+                    Debug.Log("Step_Generator.InitSteps() - easy");
+                    arrowSpeed = 0.009f;
+                    noteData = songData.easy;
+                }
+                else
+                {
+                    goto case Song_Parser.difficulties.medium;
+                }
                 break;
             case Song_Parser.difficulties.medium:
-                arrowSpeed = 0.011f;
-                noteData = songData.medium;
+                if (songData.mediumExists)
+                {
+                    Debug.Log("Step_Generator.InitSteps() - medium");
+                    arrowSpeed = 0.011f;
+                    noteData = songData.medium;
+                }
+                else
+                {
+                    goto case Song_Parser.difficulties.hard;
+                }
                 break;
             case Song_Parser.difficulties.hard:
-                arrowSpeed = 0.013f;
-                noteData = songData.hard;
+                if (songData.hardExists)
+                {
+                    Debug.Log("Step_Generator.InitSteps() - hard");
+                    arrowSpeed = 0.013f;
+                    noteData = songData.hard;
+                }
+                else
+                {
+                    goto case Song_Parser.difficulties.challenge;
+                }
                 break;
             case Song_Parser.difficulties.challenge:
-                originalArrowSpeed = 0.009f;
-                arrowSpeed = 0.016f;
-                noteData = songData.challenge;
+                if (songData.challengeExists)
+                {
+                    Debug.Log("Step_Generator.InitSteps() - challenge");
+                    originalArrowSpeed = 0.009f;
+                    arrowSpeed = 0.016f;
+                    noteData = songData.challenge;
+                }
+                else
+                {
+                    goto case Song_Parser.difficulties.beginner;
+                }
                 break;
             default:
-                goto case Song_Parser.difficulties.easy;
+                Debug.Log("Step_Generator.InitSteps() - default");
+                goto case Song_Parser.difficulties.beginner;
         }
 
         originalArrowSpeed = arrowSpeed;
